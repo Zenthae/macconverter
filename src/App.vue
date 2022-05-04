@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-
-const sliceAdresse = (adresse: string, char: ':' | '-') => {
-  const v = clearAdresse(adresse);
-
-  return `${v.slice(0, 2)}${char}${v.slice(2, 4)}${char}${v.slice(
-    4,
-    6,
-  )}${char}${v.slice(6, 8)}${char}${v.slice(8, 10)}${char}${v.slice(10, 12)}`;
-};
-
-const clearAdresse = (v: string) => {
-  return v.replace(/[-:]/g, '');
-};
+import { ref } from 'vue';
+import {
+  copyToClipboard,
+  lowerCaseAndColumn,
+  upperCaseAndColumn,
+  upperCaseAndRow,
+  upperCaseNoSeparator,
+} from './converter';
 
 const truth = ref('');
 
@@ -20,26 +14,6 @@ const updateTruth = (event: Event) => {
   const v = (event.target as HTMLInputElement).value;
 
   truth.value = v;
-};
-
-const upperCaseNoSeparator = computed(() =>
-  clearAdresse(truth.value).toUpperCase(),
-);
-
-const upperCaseAndColumn = computed(() => {
-  return sliceAdresse(clearAdresse(truth.value), ':').toUpperCase();
-});
-
-const lowerCaseAndColumn = computed(() => {
-  return sliceAdresse(clearAdresse(truth.value), ':').toLowerCase();
-});
-
-const upperCaseAndRow = computed(() => {
-  return sliceAdresse(clearAdresse(truth.value), '-').toUpperCase();
-});
-
-const copyToClipboard = (value: string) => {
-  navigator.clipboard.writeText(value);
 };
 </script>
 
@@ -54,20 +28,20 @@ const copyToClipboard = (value: string) => {
     />
 
     <label> Format : 3CA0679484A5 </label>
-    <input type="text" :value="upperCaseNoSeparator" disabled />
-    <button @click="copyToClipboard(upperCaseNoSeparator)">Copy</button>
+    <input type="text" :value="upperCaseNoSeparator(truth)" disabled />
+    <button @click="copyToClipboard(upperCaseNoSeparator(truth))">Copy</button>
 
     <label> Format : 3C:A0:67:94:84:A5 </label>
-    <input type="text" :value="upperCaseAndColumn" disabled />
-    <button @click="copyToClipboard(upperCaseAndColumn)">Copy</button>
+    <input type="text" :value="upperCaseAndColumn(truth)" disabled />
+    <button @click="copyToClipboard(upperCaseAndColumn(truth))">Copy</button>
 
     <label> Format : 3c:a0:67:94:84:a5 </label>
-    <input type="text" :value="lowerCaseAndColumn" disabled />
-    <button @click="copyToClipboard(lowerCaseAndColumn)">Copy</button>
+    <input type="text" :value="lowerCaseAndColumn(truth)" disabled />
+    <button @click="copyToClipboard(lowerCaseAndColumn(truth))">Copy</button>
 
     <label> Format : 3C-A0-67-94-84-A5 </label>
-    <input type="text" :value="upperCaseAndRow" disabled />
-    <button @click="copyToClipboard(upperCaseAndRow)">Copy</button>
+    <input type="text" :value="upperCaseAndRow(truth)" disabled />
+    <button @click="copyToClipboard(upperCaseAndRow(truth))">Copy</button>
   </div>
 </template>
 
