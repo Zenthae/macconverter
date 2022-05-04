@@ -14,7 +14,7 @@ const clearAdresse = (v: string) => {
   return v.replace(/[-:]/g, '');
 };
 
-const truth = ref('3CA0679484A5');
+const truth = ref('');
 
 const updateTruth = (event: Event) => {
   const v = (event.target as HTMLInputElement).value;
